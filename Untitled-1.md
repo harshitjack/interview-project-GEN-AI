@@ -1,0 +1,66 @@
+
+
+├── 📁 backend
+│   ├── 📁 src
+│   │   ├── 📁 controller
+│   │   │   └── 📄 auth.controller.js
+│   │   ├── 📁 db
+│   │   │   └── 📄 db.js
+│   │   ├── 📁 middleware
+│   │   │   ├── 📄 auth.middleware.js
+│   │   │   └── 📄 file.middleware.js
+│   │   ├── 📁 models
+│   │   │   ├── 📄 blacklist.model.js
+│   │   │   └── 📄 user.model.js
+│   │   ├── 📁 routes
+│   │   │   └── 📄 auth.routes.js
+│   │   └── 📄 app.js
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   └── 📄 server.js
+├── 📁 frontend
+│   ├── 📁 public
+│   │   ├── 🖼️ favicon.svg
+│   │   └── 🖼️ icons.svg
+│   ├── 📁 src
+│   │   ├── 📁 features
+│   │   │   ├── 📁 auth
+│   │   │   │   ├── 📁 components
+│   │   │   │   │   └── 📄 Proctected.jsx
+│   │   │   │   ├── 📁 hooks
+│   │   │   │   │   └── 📄 useAuth.js
+│   │   │   │   ├── 📁 pages
+│   │   │   │   │   ├── 📄 Login.jsx
+│   │   │   │   │   └── 📄 Register.jsx
+│   │   │   │   ├── 📁 services
+│   │   │   │   │   └── 📄 auth.api.js
+│   │   │   │   ├── 📄 auth.context.jsx
+│   │   │   │   └── 🎨 auth.form.scss
+│   │   │   └── 📁 interview
+│   │   │       ├── 📁 hooks
+│   │   │       │   └── 📄 useInterview.js
+│   │   │       ├── 📁 pages
+│   │   │       │   ├── 📄 Home.jsx
+│   │   │       │   └── 📄 Interview.jsx
+│   │   │       ├── 📁 services
+│   │   │       │   └── 📄 interview.api.jsx
+│   │   │       ├── 📁 style
+│   │   │       │   ├── 🎨 home.scss
+│   │   │       │   └── 🎨 interview.scss
+│   │   │       └── 📄 interview.context.jsx
+│   │   ├── 📁 style
+│   │   │   └── 🎨 button.scss
+│   │   ├── 📄 App.jsx
+│   │   ├── 📄 app.routes.jsx
+│   │   ├── 📄 main.jsx
+│   │   └── 🎨 style.scss
+│   ├── ⚙️ .gitignore
+│   ├── 📝 README.md
+│   ├── 📄 eslint.config.js
+│   ├── 🌐 index.html
+│   ├── ⚙️ package-lock.json
+│   ├── ⚙️ package.json
+│   └── 📄 vite.config.js
+└── ⚙️ .gitignore
+
+
