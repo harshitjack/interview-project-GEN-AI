@@ -9,8 +9,7 @@ app.use(cookieParser())
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://interview-project-gen-ai-4.onrender.com",
-        "https://genai-d1zg.onrender.com"
+        "https://genai-1-vahu.onrender.com"
     ],
     credentials: true
 }))
