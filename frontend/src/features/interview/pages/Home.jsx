@@ -8,14 +8,28 @@ const Home = () => {
     const { loading, generateReport,reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
+    const [ selectedFileName, setSelectedFileName ] = useState("")
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
+    const handleFileChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFileName(e.target.files[0].name)
+        }
+    }
+
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
+        const resumeFile = resumeInputRef.current.files && resumeInputRef.current.files.length > 0 
+            ? resumeInputRef.current.files[0] 
+            : null;
         const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+        if (data && data._id) {
+            navigate(`/interview/${data._id}`)
+        } else {
+            console.error("Failed to generate report data:", data);
+            alert("Failed to generate interview report. Please check your inputs and try again.")
+        }
     }
 
     if (loading) {
@@ -50,11 +64,12 @@ const Home = () => {
                         </div>
                         <textarea
                             onChange={(e) => { setJobDescription(e.target.value) }}
+                            value={jobDescription}
                             className='panel__textarea'
                             placeholder={`Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'`}
                             maxLength={5000}
                         />
-                        <div className='char-counter'>0 / 5000 chars</div>
+                        <div className='char-counter'>{jobDescription.length} / 5000 chars</div>
                     </div>
 
                     {/* Vertical Divider */}
@@ -81,8 +96,11 @@ const Home = () => {
                                 </span>
                                 <p className='dropzone__title'>Click to upload or drag &amp; drop</p>
                                 <p className='dropzone__subtitle'>PDF or DOCX (Max 5MB)</p>
-                                <input ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf,.docx' />
+                                <input onChange={handleFileChange} ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf,.docx' />
                             </label>
+                            {selectedFileName && (
+                                <p className='selected-file'>Selected: <strong>{selectedFileName}</strong></p>
+                            )}
                         </div>
 
                         {/* OR Divider */}
@@ -93,6 +111,7 @@ const Home = () => {
                             <label className='section-label' htmlFor='selfDescription'>Quick Self-Description</label>
                             <textarea
                                 onChange={(e) => { setSelfDescription(e.target.value) }}
+                                value={selfDescription}
                                 id='selfDescription'
                                 name='selfDescription'
                                 className='panel__textarea panel__textarea--short'

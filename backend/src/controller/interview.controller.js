@@ -1,4 +1,5 @@
-const pdfParse = require("pdf-parse")
+const pdfParseModule = require("pdf-parse")
+const pdfParse = pdfParseModule.PDFParse || pdfParseModule
 const { generateInterviewReport, generateResumePdf } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
@@ -7,29 +8,52 @@ const interviewReportModel = require("../models/interviewReport.model")
 
 
 async function generateInterViewReportController(req, res) {
+    try {
+        const { selfDescription, jobDescription } = req.body
 
-    const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
-    const { selfDescription, jobDescription } = req.body
+        if (!jobDescription) {
+            return res.status(400).json({
+                message: "Job description is required."
+            })
+        }
 
-    const interViewReportByAi = await generateInterviewReport({
-        resume: resumeContent.text,
-        selfDescription,
-        jobDescription
-    })
+        if (!req.file && !selfDescription) {
+            return res.status(400).json({
+                message: "Please provide either a resume or a self description."
+            })
+        }
 
-    const interviewReport = await interviewReportModel.create({
-        user: req.user.id,
-        resume: resumeContent.text,
-        selfDescription,
-        jobDescription,
-        ...interViewReportByAi
-    })
+        let resumeText = ""
+        if (req.file) {
+            const resumeContent = await pdfParse(req.file.buffer)
+            resumeText = resumeContent.text
+        }
 
-    res.status(201).json({
-        message: "Interview report generated successfully.",
-        interviewReport
-    })
+        const interViewReportByAi = await generateInterviewReport({
+            resume: resumeText,
+            selfDescription,
+            jobDescription
+        })
 
+        const interviewReport = await interviewReportModel.create({
+            user: req.user.id,
+            resume: resumeText,
+            selfDescription,
+            jobDescription,
+            ...interViewReportByAi
+        })
+
+        res.status(201).json({
+            message: "Interview report generated successfully.",
+            interviewReport
+        })
+
+    } catch (error) {
+        console.error("GENERATE REPORT ERROR:", error)
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
 }
 
 
